@@ -55,7 +55,6 @@ function allow_hyphens_in_site_url( $result ) {
 			}
 
 			if ( 'Site names can only contain lowercase letters (a-z) and numbers.' === $message ) {
-
 				$pattern = '/^[a-z0-9]+([-]?[a-z0-9]+)*$/';
 				preg_match( $pattern, $result['blogname'], $match );
 
