@@ -19,6 +19,14 @@ function remove_pressbooks_hooks() {
 	remove_action( 'wp_login', '\Pressbooks\Activation::forcePbColors', 10 );
 	remove_action( 'profile_update', '\Pressbooks\Activation::forcePbColors' );
 	remove_action( 'user_register', '\Pressbooks\Activation::forcePbColors' );
+
+	// Remove everything related to Google Analytics.
+	remove_action( 'network_admin_menu', '\Pressbooks\Admin\Analytics\add_network_menu' );
+	remove_action( 'admin_init', '\Pressbooks\Admin\Analytics\network_analytics_settings_init' );
+	remove_action( 'admin_menu', '\Pressbooks\Admin\Analytics\add_menu' );
+	remove_action( 'admin_init', '\Pressbooks\Admin\Analytics\analytics_settings_init' );
+	remove_action( 'admin_head', '\Pressbooks\Admin\Analytics\print_admin_analytics' );
+	remove_action( 'wp_head', '\Pressbooks\Analytics\print_analytics' );
 }
 
 /**
