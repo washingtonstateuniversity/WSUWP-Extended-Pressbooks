@@ -11,6 +11,8 @@ Author URI: https://web.wsu.edu
 namespace WSU\Pressbooks;
 
 add_action( 'plugins_loaded', '\WSU\Pressbooks\remove_pressbooks_hooks' );
+add_filter( 'wsu_analytics_app_analytics_id', '\WSU\Pressbooks\app_analytics_id' );
+add_filter( 'pre_option_wsuwp_ga_id', 'WSU\Pressbooks\opentext_analytics_id' );
 add_filter( 'wpmu_validate_blog_signup', '\WSU\Pressbooks\allow_hyphens_in_site_url' );
 add_action( 'before_signup_form', 'WSU\Pressbooks\add_signup_text_filter' );
 
@@ -19,6 +21,38 @@ function remove_pressbooks_hooks() {
 	remove_action( 'wp_login', '\Pressbooks\Activation::forcePbColors', 10 );
 	remove_action( 'profile_update', '\Pressbooks\Activation::forcePbColors' );
 	remove_action( 'user_register', '\Pressbooks\Activation::forcePbColors' );
+
+	// Remove everything related to Google Analytics.
+	remove_action( 'network_admin_menu', '\Pressbooks\Admin\Analytics\add_network_menu' );
+	remove_action( 'admin_init', '\Pressbooks\Admin\Analytics\network_analytics_settings_init' );
+	remove_action( 'admin_menu', '\Pressbooks\Admin\Analytics\add_menu' );
+	remove_action( 'admin_init', '\Pressbooks\Admin\Analytics\analytics_settings_init' );
+	remove_action( 'admin_head', '\Pressbooks\Admin\Analytics\print_admin_analytics' );
+	remove_action( 'wp_head', '\Pressbooks\Analytics\print_analytics' );
+}
+
+/**
+ * Filter the GA code used for tracking application views.
+ *
+ * The returned string is one we associate with the "WordPress" application.
+ *
+ * @since 0.0.4
+ *
+ * @return string The GA ID used for tracking application page views in Google Analytics.
+ */
+function app_analytics_id() {
+	return 'UA-69906812-7';
+}
+
+/**
+ * Filter the GA code used at each site level.
+ *
+ * @since 0.0.4
+ *
+ * @return string The GA code assigned to opentext.wsu.edu.
+ */
+function opentext_analytics_id() {
+	return 'UA-17815664-40';
 }
 
 /**
